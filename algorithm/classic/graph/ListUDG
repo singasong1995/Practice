@@ -1,0 +1,95 @@
+
+public class ListUDG {
+  private class ENode{
+	  int ivex;//链表中的结点在顶点数组中的位置
+	  ENode nextEgde;//链表结点指向的下一个结点
+  }
+  private class VNode{
+	  char data;//顶点值
+	  ENode firstEdge;//邻接链表第一个结点
+  }	
+  private VNode[] mVexs;//顶点数组	
+  
+   public void print(){
+	   for (int i = 0; i < mVexs.length; i++) {
+		   System.out.print(mVexs[i].data+" ");
+		  if (mVexs[i].firstEdge==null) {
+			  System.out.println("");
+		}else{
+			ENode node = mVexs[i].firstEdge;
+			
+			while(node!=null){
+				System.out.print(mVexs[node.ivex].data+" ");
+				node = node.nextEgde;
+			}
+			System.out.println("");
+		}
+		   
+		   
+	}
+  }
+  
+  private int getPosition(char ch){//得到顶点位置
+	   for(int i=0;i<mVexs.length;i++){
+	       if(mVexs[i].data==ch)
+	    	   return i;
+	   }
+	   return -1;
+  }
+  //在邻接表中加入结点
+  private void linkLast(ENode firstNode,ENode node){
+	  ENode p = firstNode;
+	  while(p.nextEgde!=null)
+		  p = p.nextEgde;
+	  p.nextEgde = node;
+  }
+  
+  public ListUDG(char[] vexs,char[][] edges){
+	  int vlen = vexs.length;
+	  int elen = edges.length;
+	  mVexs = new VNode[vlen];
+	  //初始化顶点
+	  for (int i = 0; i < vlen; i++) {
+		mVexs[i] = new VNode();
+		mVexs[i].data = vexs[i];
+		mVexs[i].firstEdge = null;
+		
+	}
+	 //初始化边
+	 for (int i = 0; i < elen; i++) {
+		int p1 = getPosition(edges[i][0]);
+		int p2 = getPosition(edges[i][1]);
+		ENode  node1 = new ENode();
+		node1.ivex = p2;
+		if(mVexs[p1].firstEdge==null)
+			 mVexs[p1].firstEdge = node1;
+		else 
+		  linkLast(mVexs[p1].firstEdge, node1);
+		ENode  node2 = new ENode();
+		node2.ivex = p1;
+		if(mVexs[p2].firstEdge==null)
+			 mVexs[p2].firstEdge = node2;
+		else 
+		  linkLast(mVexs[p2].firstEdge, node2);
+		
+		
+	}   
+  }
+  
+   public static void main(String[] args) {
+	   char[] vexs = {'A','B','C','D','E','F'};
+		char [][] edges = new char[][]{
+			{'A','B'},	
+			{'A','C'},
+			{'A','D'},
+			{'A','E'},
+			{'B','C'},
+			{'B','F'},
+			{'C','D'}	
+		};
+		ListUDG listUDG  = new ListUDG(vexs, edges);	
+        listUDG.print();
+   
+ }
+
+}
